@@ -1,7 +1,3 @@
-<header>
-  <h1><%= page_title %></h1>
-</header>
-
 <% if notes.empty? %>
   <aside>
     <h3>まだNoteがありません💡</h3>
@@ -22,11 +18,15 @@
       <% notes.each do |note| %>
         <tr>
           <td>
-            <a href="/#{note.id}"><%= note.title %></a>
+            <a href="/<%= note.id %>"><%= note.title %></a>
           </td>
           <td>
-            <a href="/#{note.id}">Edit</a>
-            <a href="/#{note.id}" method="delete">Delete</a>
+            <a href="/<%= note.id %>/edit"><i>Edit</i></a>
+            <form action="/<%= note.id %>" method="post" class="delete-action">
+              <input type="hidden" name="_method" value="delete">
+
+              <input type="submit" value="Delete">
+            </form>
           </td>
         </tr>
       <% end %>

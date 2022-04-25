@@ -1,7 +1,5 @@
-<h1><%= page_title %></h1>
-
 <label for="title">Title:</label>
-<input type="text" id="title" name="title" placeholder="Title" size="42">
+<input type="text" id="title" name="title" placeholder="Title" size="42" value="<%= note.title %>">
 
 <label for="content">Content:</label>
-<textarea id="content" name="content" placeholder="Content" cols="50" rows="10"></textarea>
+<textarea id="content" name="content" placeholder="Content" cols="50" rows="10"><%= note.content %></textarea>

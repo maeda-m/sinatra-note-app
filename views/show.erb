@@ -1,0 +1,11 @@
+<aside>
+  <p><%= note.content %></p>
+
+  <hr>
+  <a href="/<%= note.id %>/edit"><i>Edit</i></a>
+  <form action="/<%= note.id %>" method="post" class="delete-action">
+    <input type="hidden" name="_method" value="delete">
+
+    <input type="submit" value="Delete">
+  </form>
+</aside>

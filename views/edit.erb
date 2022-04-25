@@ -1,6 +1,6 @@
-<form action="/123" method="post">
+<form action="/<%= note.id %>" method="post">
   <input type="hidden" name="_method" value="patch">
 
-  <%= erb :form %>
+  <%= erb :form, locals: { note: note } %>
   <button type="submit">Update</button>
 </form>
