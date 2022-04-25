@@ -26,13 +26,13 @@ class NoteApp < Sinatra::Base
     end
 
     def edit_button(note)
-      "<a href='/#{note.id}/edit' class='edit-button'><i>Edit</i></a>"
+      "<a href='/#{note.id}/edit' class='edit-button'><i>編集する</i></a>"
     end
 
     def destroy_button(note)
       "<form action='/#{note.id}' method='post' class='destroy-action'>" \
         '<input type="hidden" name="_method" value="delete">' \
-        '<input type="submit" value="Delete" class="destroy-button">' \
+        '<input type="submit" value="削除する" class="destroy-button">' \
       '</form>'
     end
   end

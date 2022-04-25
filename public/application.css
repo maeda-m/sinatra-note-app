@@ -33,12 +33,15 @@ article aside {
 
 .edit-button i {
   padding: 0.4rem;
+  font-weight: normal;
+  font-style: normal;
+  border-width: 1px;
 }
 
 .destroy-button {
   display: inline;
   margin-left: 2rem;
-  padding: 0.65rem;
+  padding: 0.4rem;
   cursor: pointer;
 }
 
