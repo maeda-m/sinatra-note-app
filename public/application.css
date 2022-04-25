@@ -1,0 +1,13 @@
+header nav {
+  margin-bottom: 0;
+}
+
+header.with-logo {
+  padding: 0 10px;
+  background-color: #363e46;
+}
+
+header.with-logo a i {
+  border-color: white;
+  color: white;
+}

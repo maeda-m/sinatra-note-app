@@ -6,11 +6,26 @@
   <meta name="robots" content="noindex">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <link rel="stylesheet" href="https://unpkg.com/mvp.css">
+  <link rel="stylesheet" href="/application.css">
+
   <title><%= page_title %> | note.maeda-m.net</title>
 </head>
 
 <body>
+  <header class="with-logo">
+    <nav>
+      <a href="/"><img src="/logo.png" alt="Note App Logo"></a>
+      <ul>
+        <li><a href="/new"><i>New Note</i></a></li>
+      </ul>
+    </nav>
+  </header>
   <main>
+    <article>
+      <aside>TODO</aside>
+    </article>
+
     <section>
       <%= yield %>
     </section>

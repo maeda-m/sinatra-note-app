@@ -1,0 +1,35 @@
+<header>
+  <h1><%= page_title %></h1>
+</header>
+
+<% if notes.empty? %>
+  <aside>
+    <h3>まだNoteがありません💡</h3>
+
+    <p><sup>Getting Started</sup></p>
+    <p>右上のボタンをクリックして新しいメモをつくりましょう🎉</p>
+  </aside>
+
+<% else %>
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% notes.each do |note| %>
+        <tr>
+          <td>
+            <a href="/#{note.id}"><%= note.title %></a>
+          </td>
+          <td>
+            <a href="/#{note.id}">Edit</a>
+            <a href="/#{note.id}" method="delete">Delete</a>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

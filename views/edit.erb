@@ -1,1 +1,6 @@
-<%= erb :form %>
+<form action="/123" method="post">
+  <input type="hidden" name="_method" value="patch">
+
+  <%= erb :form %>
+  <button type="submit">Update</button>
+</form>
