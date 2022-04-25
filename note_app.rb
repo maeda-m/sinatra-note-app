@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'sinatra/base'
+require_relative 'models/note'
 
 class NoteApp < Sinatra::Base
   enable :logging, :method_override
@@ -13,52 +14,81 @@ class NoteApp < Sinatra::Base
 
   # action: edit
   get '/:id/edit' do
-    @page_title = 'Edit Note'
-
-    erb :edit
+    note = Note.find(params[:id])
+    render_edit(note)
   end
 
   # action: new
   get '/new' do
-    @page_title = 'New Note'
-
-    erb :new
+    render_new(Note.new)
   end
 
   # action: show
   get '/:id' do
-    @page_title = 'TODO'
+    note = Note.find(params[:id])
+    @page_title = note.title
 
-    erb :show
+    erb :show, locals: { note: note }
   end
 
   # action: destroy
   delete '/:id' do
-    redirect to('/'), 303
+    note = Note.find(params[:id])
+    note.destroy
+
+    redirect_root
   end
 
   # action: update
   patch '/:id' do
-    @page_title = 'Edit Note'
+    note = Note.find(params[:id])
 
-    redirect to('/'), 303
+    if note.update(slice_params)
+      redirect_root
+    else
+      render_edit(note)
+    end
   end
 
   # action: create
   post '/' do
-    @page_title = 'New Note'
+    note = Note.new(slice_params)
 
-    redirect to('/'), 303
+    if note.save
+      redirect_root
+    else
+      render_new(note)
+    end
   end
 
   # action: index
   get '/' do
     @page_title = 'Notes'
 
-    erb :index, locals: { notes: [] }
+    erb :index, locals: { notes: Note.all }
   end
 
   error 404 do
     'Not Found'
+  end
+
+  private
+
+  def slice_params
+    params.slice(:title, :content)
+  end
+
+  def render_new(note)
+    @page_title = 'New Note'
+    erb :new, locals: { note: note }
+  end
+
+  def render_edit(note)
+    @page_title = 'Edit Note'
+    erb :edit, locals: { note: note }
+  end
+
+  def redirect_root
+    redirect to('/'), 303
   end
 end
