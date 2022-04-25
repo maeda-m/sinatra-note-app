@@ -11,3 +11,33 @@ header.with-logo a i {
   border-color: white;
   color: white;
 }
+
+header.with-logo a:hover {
+  background-color: #444a54;
+}
+
+form.destroy-action {
+  border: none;
+  display: inline;
+  padding: 0;
+  box-shadow: none;
+}
+
+article aside {
+  padding: 10px;
+}
+
+.edit-button i {
+  padding: 0.4rem;
+}
+
+.destroy-button {
+  display: inline;
+  margin-left: 2rem;
+  padding: 0.65rem;
+  cursor: pointer;
+}
+
+.destroy-button:hover {
+  border: 1px solid #363e46;
+}

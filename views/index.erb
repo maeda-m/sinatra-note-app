@@ -21,12 +21,8 @@
             <a href="/<%= note.id %>"><%= note.title %></a>
           </td>
           <td>
-            <a href="/<%= note.id %>/edit"><i>Edit</i></a>
-            <form action="/<%= note.id %>" method="post" class="delete-action">
-              <input type="hidden" name="_method" value="delete">
-
-              <input type="submit" value="Delete">
-            </form>
+            <%= edit_button(note) %>
+            <%= destroy_button(note) %>
           </td>
         </tr>
       <% end %>
