@@ -5,10 +5,20 @@ require_relative 'models/note'
 
 class NoteApp < Sinatra::Base
   enable :logging, :method_override
+  use Rack::Session::Pool, expire_after: 1.day
+  use Rack::Protection::RemoteToken
+  use Rack::Protection::SessionHijacking
 
   helpers do
     def page_title
       @page_title
+    end
+
+    def render_message
+      message = session.delete(:message)
+      return if message.nil? || message.empty?
+
+      "<article><aside>#{message}</aside></article>"
     end
   end
 
@@ -36,7 +46,7 @@ class NoteApp < Sinatra::Base
     note = Note.find(params[:id])
     note.destroy
 
-    redirect_root
+    redirect_root('削除しました')
   end
 
   # action: update
@@ -44,7 +54,7 @@ class NoteApp < Sinatra::Base
     note = Note.find(params[:id])
 
     if note.update(slice_params)
-      redirect_root
+      redirect_root('更新しました')
     else
       render_edit(note)
     end
@@ -55,7 +65,7 @@ class NoteApp < Sinatra::Base
     note = Note.new(slice_params)
 
     if note.save
-      redirect_root
+      redirect_root('登録しました')
     else
       render_new(note)
     end
@@ -88,7 +98,9 @@ class NoteApp < Sinatra::Base
     erb :edit, locals: { note: note }
   end
 
-  def redirect_root
+  def redirect_root(message)
+    session[:message] = message
+
     redirect to('/'), 303
   end
 end
