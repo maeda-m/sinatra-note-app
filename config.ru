@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
-require 'sinatra'
+require_relative 'note_app'
 
-run Sinatra::Application
+run Rack::URLMap.new({
+  '/' => NoteApp,
+  '/notes' => NoteApp
+})
