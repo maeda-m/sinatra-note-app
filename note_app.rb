@@ -35,6 +35,10 @@ class NoteApp < Sinatra::Base
         '<input type="submit" value="削除する" class="destroy-button">' \
       '</form>'
     end
+
+    def session_id
+      session.id.to_s
+    end
   end
 
   # action: edit
@@ -90,7 +94,7 @@ class NoteApp < Sinatra::Base
   get '/' do
     @page_title = 'Notes'
 
-    erb :index, locals: { notes: Note.all }
+    erb :index, locals: { notes: Note.where(session_id: session_id) }
   end
 
   error 404 do
@@ -100,7 +104,7 @@ class NoteApp < Sinatra::Base
   private
 
   def slice_params
-    params.slice(:title, :content)
+    params.slice(:title, :content).merge(session_id: session_id)
   end
 
   def render_new(note)
