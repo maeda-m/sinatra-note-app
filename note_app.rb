@@ -14,13 +14,18 @@ class NoteApp < Sinatra::Base
 
   # action: edit
   get '/:id/edit' do
+    @page_title = 'Edit Note'
     note = Note.find(params[:id])
-    render_edit(note)
+
+    erb :edit, locals: { note: }
   end
 
   # action: new
   get '/new' do
-    render_new(Note.new)
+    @page_title = 'New Note'
+    note = Note.new
+
+    erb :new, locals: { note: }
   end
 
   # action: show
@@ -43,22 +48,16 @@ class NoteApp < Sinatra::Base
   patch '/:id' do
     note = Note.find(params[:id])
 
-    if note.update(slice_params)
-      redirect_root('更新しました')
-    else
-      render_edit(note)
-    end
+    note.update(slice_params)
+    redirect_root('更新しました')
   end
 
   # action: create
   post '/' do
     note = Note.new(slice_params)
 
-    if note.save
-      redirect_root('登録しました')
-    else
-      render_new(note)
-    end
+    note.save
+    redirect_root('登録しました')
   end
 
   # action: index
@@ -69,10 +68,6 @@ class NoteApp < Sinatra::Base
     erb :index, locals: { notes: }
   end
 
-  error 404 do
-    'Not Found'
-  end
-
   private
 
   def session_id
@@ -81,16 +76,6 @@ class NoteApp < Sinatra::Base
 
   def slice_params
     params.slice(:title, :content).merge(session_id:)
-  end
-
-  def render_new(note)
-    @page_title = 'New Note'
-    erb :new, locals: { note: }
-  end
-
-  def render_edit(note)
-    @page_title = 'Edit Note'
-    erb :edit, locals: { note: }
   end
 
   def redirect_root(message)

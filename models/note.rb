@@ -16,12 +16,11 @@ class Note < ActiveYaml::Base
       f.write(to_yaml)
     end
     force_reload
-
-    true
   end
 
   def update(attrs)
-    destroy && self.class.new(attrs).save
+    destroy
+    Note.create(attrs)
   end
 
   def destroy
@@ -29,8 +28,6 @@ class Note < ActiveYaml::Base
       File.write(full_path, f.read.sub(to_yaml, ''))
     end
     force_reload
-
-    true
   end
 
   def to_yaml
@@ -43,10 +40,10 @@ class Note < ActiveYaml::Base
   private
 
   def full_path
-    self.class.full_path
+    Note.full_path
   end
 
   def force_reload
-    self.class.reload(true)
+    Note.reload(true)
   end
 end
