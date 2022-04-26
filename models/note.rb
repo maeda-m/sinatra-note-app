@@ -2,6 +2,7 @@
 
 require 'active_hash'
 
+# DataGateway
 class Note < ActiveYaml::Base
   set_root_path 'values'
   set_filename 'note'
@@ -34,7 +35,7 @@ class Note < ActiveYaml::Base
 
   def to_yaml
     plain_hash = attributes.to_h.transform_keys(&:to_s)
-    yaml = ([plain_hash]).to_yaml
+    yaml = [plain_hash].to_yaml
 
     yaml.sub(/\A---\n/, '')
   end

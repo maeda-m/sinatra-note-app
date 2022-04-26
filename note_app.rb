@@ -3,6 +3,7 @@
 require 'sinatra/base'
 require_relative 'models/note'
 
+# Application
 class NoteApp < Sinatra::Base
   enable :logging, :method_override
   use Rack::Session::Pool, expire_after: 1.day
@@ -10,9 +11,7 @@ class NoteApp < Sinatra::Base
   use Rack::Protection::SessionHijacking
 
   helpers do
-    def page_title
-      @page_title
-    end
+    attr_reader :page_title
 
     def render_message
       message = session.delete(:message)
@@ -35,10 +34,6 @@ class NoteApp < Sinatra::Base
         '<input type="submit" value="削除する" class="destroy-button">' \
       '</form>'
     end
-
-    def session_id
-      session.id.to_s
-    end
   end
 
   # action: edit
@@ -57,7 +52,7 @@ class NoteApp < Sinatra::Base
     note = Note.find(params[:id])
     @page_title = note.title
 
-    erb :show, locals: { note: note }
+    erb :show, locals: { note: }
   end
 
   # action: destroy
@@ -94,7 +89,8 @@ class NoteApp < Sinatra::Base
   get '/' do
     @page_title = 'Notes'
 
-    erb :index, locals: { notes: Note.where(session_id: session_id) }
+    notes = Note.where(session_id:)
+    erb :index, locals: { notes: }
   end
 
   error 404 do
@@ -103,18 +99,22 @@ class NoteApp < Sinatra::Base
 
   private
 
+  def session_id
+    session.id.to_s
+  end
+
   def slice_params
-    params.slice(:title, :content).merge(session_id: session_id)
+    params.slice(:title, :content).merge(session_id:)
   end
 
   def render_new(note)
     @page_title = 'New Note'
-    erb :new, locals: { note: note }
+    erb :new, locals: { note: }
   end
 
   def render_edit(note)
     @page_title = 'Edit Note'
-    erb :edit, locals: { note: note }
+    erb :edit, locals: { note: }
   end
 
   def redirect_root(message)
