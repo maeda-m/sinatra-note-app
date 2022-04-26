@@ -4,7 +4,7 @@ Webアプリの構成要素を学ぶためのメモアプリです。
 
 ## スクリーンショット
 
-TODO
+![screenshot](https://user-images.githubusercontent.com/943541/165239104-43f43945-6f01-4844-b4f3-d9b60177c0a6.gif)
 
 ## 開発環境
 
@@ -45,7 +45,12 @@ $ rake test
 
 ## Linter
 
+1. Ruby Style Guide
 ```
-$ cd sinatra-note-app
-$ rubocop
+  $ cd sinatra-note-app
+  $ rubocop
 ```
+2. HTML
+    - https://validator.w3.org/
+3. CSS
+    - https://jigsaw.w3.org/css-validator/
