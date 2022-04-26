@@ -53,7 +53,7 @@ class TestIntegration < Test::Unit::TestCase
   def test_show
     # 該当するNoteが存在しない
     @user1.get '/dummy_id'
-    assert @user1.last_response.server_error?
+    assert @user1.last_response.not_found?
 
     # Note あり（user1）
     note = Note.create(title: 'たいとる', content: 'ないよう', session_id: @user1_session_id)
@@ -86,7 +86,7 @@ class TestIntegration < Test::Unit::TestCase
   def test_edit
     # 該当するNoteが存在しない
     @user1.get '/dummy_id/edit'
-    assert @user1.last_response.server_error?
+    assert @user1.last_response.not_found?
 
     # Note あり（user1）
     note = Note.create(title: 'たいとる', content: 'ないよう', session_id: @user1_session_id)

@@ -68,6 +68,14 @@ class NoteApp < Sinatra::Base
     erb :index, locals: { notes: }
   end
 
+  error ActiveHash::RecordNotFound do
+    render_not_found
+  end
+
+  not_found do
+    render_not_found
+  end
+
   private
 
   def session_id
@@ -82,5 +90,12 @@ class NoteApp < Sinatra::Base
     session[:message] = message
 
     redirect to('/'), 303
+  end
+
+  def render_not_found
+    @page_title = 'Not Found'
+
+    status(404)
+    erb :not_found
   end
 end
