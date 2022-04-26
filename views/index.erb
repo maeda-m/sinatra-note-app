@@ -18,7 +18,7 @@
       <% notes.each do |note| %>
         <tr>
           <td>
-            <a href="/<%= note.id %>"><%= note.title %></a>
+            <a href="/<%= note.id %>"><%= h note.title %></a>
           </td>
           <td>
             <%= edit_button(note) %>

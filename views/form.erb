@@ -1,5 +1,5 @@
 <label for="title">Title:</label>
-<input type="text" id="title" name="title" size="42" value="<%= note.title %>">
+<input type="text" id="title" name="title" size="42" value="<%= h note.title %>">
 
 <label for="content">Content:</label>
-<textarea id="content" name="content" cols="50" rows="10"><%= note.content %></textarea>
+<textarea id="content" name="content" cols="50" rows="10"><%= h note.content %></textarea>
