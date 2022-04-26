@@ -16,3 +16,7 @@ group :development do
 
   gem 'debug'
 end
+
+group :test do
+  gem 'rack-test'
+end
