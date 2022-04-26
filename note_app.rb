@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'sinatra/base'
+require_relative 'note_helper'
 require_relative 'models/note'
 
 # Application
@@ -9,32 +10,7 @@ class NoteApp < Sinatra::Base
   use Rack::Session::Pool, expire_after: 1.day
   use Rack::Protection::RemoteToken
   use Rack::Protection::SessionHijacking
-
-  helpers do
-    attr_reader :page_title
-
-    def render_message
-      message = session.delete(:message)
-      return if message.nil? || message.empty?
-
-      "<article><aside>#{message}</aside></article>"
-    end
-
-    def h(text)
-      Rack::Utils.escape_html(text)
-    end
-
-    def edit_button(note)
-      "<a href='/#{note.id}/edit' class='edit-button'><i>編集する</i></a>"
-    end
-
-    def destroy_button(note)
-      "<form action='/#{note.id}' method='post' class='destroy-action'>" \
-        '<input type="hidden" name="_method" value="delete">' \
-        '<input type="submit" value="削除する" class="destroy-button">' \
-      '</form>'
-    end
-  end
+  helpers NoteHelper
 
   # action: edit
   get '/:id/edit' do
