@@ -69,6 +69,8 @@ class NoteApp < Sinatra::Base
   end
 
   error ActiveHash::RecordNotFound do
+    # 500 Internal Server Error を上書きする
+    status(404)
     render_not_found
   end
 
@@ -95,7 +97,6 @@ class NoteApp < Sinatra::Base
   def render_not_found
     @page_title = 'Not Found'
 
-    status(404)
     erb :not_found
   end
 end
