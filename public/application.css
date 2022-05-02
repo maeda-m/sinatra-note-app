@@ -1,0 +1,50 @@
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+header nav {
+  margin-bottom: 0;
+}
+
+header.with-logo {
+  padding: 0 10px;
+  background-color: #363e46;
+}
+
+header.with-logo a i {
+  border-color: white;
+  color: white;
+}
+
+header.with-logo a:hover {
+  background-color: #444a54;
+}
+
+form.destroy-action {
+  border: none;
+  display: inline;
+  padding: 0;
+  box-shadow: none;
+}
+
+article aside {
+  padding: 10px;
+}
+
+.edit-button i {
+  padding: 0.4rem;
+  font-weight: normal;
+  font-style: normal;
+  border-width: 1px;
+}
+
+.destroy-button {
+  display: inline;
+  margin-left: 2rem;
+  padding: 0.4rem;
+  cursor: pointer;
+}
+
+.destroy-button:hover {
+  border: 1px solid #363e46;
+}

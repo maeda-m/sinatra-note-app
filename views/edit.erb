@@ -1,0 +1,6 @@
+<form action="/<%= note.id %>" method="post">
+  <input type="hidden" name="_method" value="patch">
+
+  <%= erb :form, locals: { note: note } %>
+  <button type="submit">更新する</button>
+</form>
