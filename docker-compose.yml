@@ -9,6 +9,8 @@ services:
       - .:/opt/sinatra-note-app
       - ruby31:/usr/local/bundle
       - histfile:/histfile
+    env_file:
+      - development.env
     environment:
       - TZ=Asia/Tokyo
       - HISTFILE=/histfile/.bash_history
@@ -29,10 +31,10 @@ services:
     volumes:
       - ./db:/docker-entrypoint-initdb.d
       - postgres14:/var/lib/postgresql/data
+    env_file:
+      - development.env
     environment:
-      - POSTGRES_USER=sinatra-note-db-user
       - POSTGRES_HOST_AUTH_METHOD=trust
-      - POSTGRES_DB=sinatra-note-development
       - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --locale=C
 
 volumes:

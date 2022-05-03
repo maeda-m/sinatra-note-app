@@ -2,6 +2,7 @@
 
 require 'sinatra/base'
 require_relative 'note_helper'
+require_relative 'lib/note'
 
 # Application
 class NoteApp < Sinatra::Base
@@ -22,7 +23,7 @@ class NoteApp < Sinatra::Base
   # action: new
   get '/new' do
     @page_title = 'New Note'
-    note = Note.new
+    note = Note.build
 
     erb :new, locals: { note: }
   end
@@ -53,9 +54,7 @@ class NoteApp < Sinatra::Base
 
   # action: create
   post '/' do
-    note = Note.new(slice_params)
-
-    note.save
+    Note.create(slice_params)
     redirect_root('登録しました')
   end
 
@@ -65,6 +64,12 @@ class NoteApp < Sinatra::Base
 
     notes = Note.where(session_id:)
     erb :index, locals: { notes: }
+  end
+
+  error Note::RecordNotFound do
+    # 500 Internal Server Error を上書きする
+    status(404)
+    render_not_found
   end
 
   not_found do
