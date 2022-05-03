@@ -2,12 +2,11 @@
 
 require 'sinatra/base'
 require_relative 'note_helper'
-require_relative 'models/note'
 
 # Application
 class NoteApp < Sinatra::Base
   enable :logging, :method_override
-  use Rack::Session::Pool, expire_after: 1.day
+  use Rack::Session::Pool, expire_after: 86_400
   use Rack::Protection::RemoteToken
   use Rack::Protection::SessionHijacking
   helpers NoteHelper
@@ -66,12 +65,6 @@ class NoteApp < Sinatra::Base
 
     notes = Note.where(session_id:)
     erb :index, locals: { notes: }
-  end
-
-  error ActiveHash::RecordNotFound do
-    # 500 Internal Server Error を上書きする
-    status(404)
-    render_not_found
   end
 
   not_found do
