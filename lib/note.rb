@@ -31,10 +31,8 @@ module Note
   end
 
   def create(attrs = {})
-    record = build(attrs)
-    record.create
-
-    record
+    gateway = build(attrs)
+    gateway.create
   end
 
   def all

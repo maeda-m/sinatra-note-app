@@ -54,7 +54,8 @@ class TestIntegration < Test::Unit::TestCase
     assert @user1.last_response.not_found?
 
     # Note あり（user1）
-    note = Note.create(title: 'たいとる', content: 'ないよう', session_id: @user1_session_id)
+    Note.create(title: 'たいとる', content: 'ないよう', session_id: @user1_session_id)
+    note = Note.all.last
     @user1.get "/#{note.id}"
     assert @user1.last_response.ok?
     assert_match '<h1>たいとる</h1>', @user1.last_response.body
@@ -87,14 +88,16 @@ class TestIntegration < Test::Unit::TestCase
     assert @user1.last_response.not_found?
 
     # Note あり（user1）
-    note = Note.create(title: 'たいとる', content: 'ないよう', session_id: @user1_session_id)
+    Note.create(title: 'たいとる', content: 'ないよう', session_id: @user1_session_id)
+    note = Note.all.last
     @user1.get "/#{note.id}/edit"
     assert @user1.last_response.ok?
     assert_match '<h1>Edit Note</h1>', @user1.last_response.body
   end
 
   def test_update
-    note = Note.create(title: 'たいとる', content: 'ないよう', session_id: @user1_session_id)
+    Note.create(title: 'たいとる', content: 'ないよう', session_id: @user1_session_id)
+    note = Note.all.last
 
     before_record_count = Note.all.count
     @user1.patch "/#{note.id}", {
@@ -110,7 +113,8 @@ class TestIntegration < Test::Unit::TestCase
   end
 
   def test_destroy
-    note = Note.create(title: 'たいとる', content: 'ないよう', session_id: @user1_session_id)
+    Note.create(title: 'たいとる', content: 'ないよう', session_id: @user1_session_id)
+    note = Note.all.last
 
     before_record_count = Note.all.count
     @user1.delete "/#{note.id}"
