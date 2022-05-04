@@ -18,7 +18,7 @@ module Note
         Time.now
       ]
 
-      Note.with_connection { |conn| conn.exec_params(sql, values) }
+      Note.execute_sql(sql, values)
     end
 
     def update(attrs)
@@ -31,14 +31,14 @@ module Note
         id
       ]
 
-      Note.with_connection { |conn| conn.exec_params(sql, values) }
+      Note.execute_sql(sql, values)
     end
 
     def destroy
       sql = 'DELETE FROM notes WHERE id = $1;'
       values = [id]
 
-      Note.with_connection { |conn| conn.exec_params(sql, values) }
+      Note.execute_sql(sql, values)
     end
   end
 end

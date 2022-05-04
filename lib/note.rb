@@ -9,12 +9,9 @@ module Note
   end
 
   def find(record_id)
-    records = []
-
-    with_connection do |conn|
-      result = conn.exec_params('SELECT * FROM notes WHERE id = $1;', [record_id])
-      result.each { |row| records << Note::Gateway.new(row) }
-    end
+    sql = 'SELECT * FROM notes WHERE id = $1;'
+    values = [record_id]
+    records = execute_sql_with_build(sql, values)
   rescue PG::InvalidTextRepresentation
     raise RecordNotFound
   else
@@ -24,13 +21,9 @@ module Note
   end
 
   def where(session_id:)
-    records = []
-    with_connection do |conn|
-      result = conn.exec_params('SELECT * FROM notes WHERE session_id = $1 ORDER BY updated_at;', [session_id])
-      result.each { |row| records << Note::Gateway.new(row) }
-    end
-
-    records
+    sql = 'SELECT * FROM notes WHERE session_id = $1 ORDER BY updated_at;'
+    values = [session_id]
+    execute_sql_with_build(sql, values)
   end
 
   def build(attrs = {})
@@ -45,13 +38,8 @@ module Note
   end
 
   def all
-    records = []
-    with_connection do |conn|
-      result = conn.exec('SELECT * FROM notes ORDER BY updated_at;')
-      result.each { |row| records << Note::Gateway.new(row) }
-    end
-
-    records
+    sql = 'SELECT * FROM notes ORDER BY updated_at;'
+    execute_sql_with_build(sql)
   end
 
   def self.establish_connection
@@ -60,8 +48,13 @@ module Note
     @connection = PG.connect(config)
   end
 
-  def self.with_connection
-    yield(@connection)
+  def self.execute_sql(sql, values = [], &block)
+    result = @connection.exec_params(sql, values)
+    result.map(&block) if block_given?
+  end
+
+  def self.execute_sql_with_build(sql, values = [])
+    execute_sql(sql, values) { |attrs| build(attrs) }
   end
 
   def self.close_connection
