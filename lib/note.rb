@@ -54,12 +54,20 @@ module Note
     records
   end
 
-  def with_connection
+  def establish_connection
+    puts 'Establishes the connection to the database.'
     config = "postgresql://#{ENV['POSTGRES_USER']}@#{ENV['POSTGRES_HOST']}:5432/#{ENV['POSTGRES_DB']}"
-    @@connection ||= PG.connect(config)
+    @@connection = PG.connect(config)
+  end
 
+  def with_connection
     yield(@@connection)
   end
 
-  module_function :find, :where, :build, :create, :all, :with_connection
+  def close_connection
+    puts 'Close the connection to the database.'
+    @@connection.close
+  end
+
+  module_function :find, :where, :build, :create, :all, :establish_connection, :with_connection, :close_connection
 end
