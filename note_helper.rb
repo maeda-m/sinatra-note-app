@@ -23,7 +23,7 @@ module NoteHelper
 
   def destroy_button(note)
     <<-HTML
-    <form action="/#{note.id}"  method="post" class="destroy-action">
+    <form action="/#{note.id}" method="post" class="destroy-action">
       <input type="hidden" name="_method" value="delete">
       <input type="submit" value="削除する" class="destroy-button">
     </form>
