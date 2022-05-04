@@ -1,0 +1,3 @@
+services:
+  sinatra:
+    command: "rubocop"

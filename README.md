@@ -35,10 +35,7 @@ Webアプリの構成要素を学ぶためのメモアプリです。
 
 ```
 $ cd sinatra-note-app
-$ docker-compose up -d
-$ docker-compose exec sinatra bash
-$ rake test
-$ docker-compose down
+$ docker-compose -f docker-compose.yml -f docker-compose.test.yml up --abort-on-container-exit
 ```
 
 ## Linter
@@ -46,10 +43,7 @@ $ docker-compose down
 1. Ruby Style Guide
 ```
   $ cd sinatra-note-app
-  $ docker-compose up -d
-  $ docker-compose exec sinatra bash
-  $ rubocop
-  $ docker-compose down
+  $ docker-compose -f docker-compose.yml -f docker-compose.rubocop.yml up --abort-on-container-exit
 ```
 2. HTML
     - https://validator.w3.org/
