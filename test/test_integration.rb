@@ -10,13 +10,11 @@ require 'rack/test'
 class TestIntegration < Test::Unit::TestCase
   class << self
     def startup
-      @tmpfile = Tempfile.new(['note', '.yml'])
-      Note.set_root_path File.dirname(@tmpfile.path)
-      Note.set_filename File.basename(@tmpfile.path, '.yml')
+      Note.establish_connection
     end
 
     def shutdown
-      @tmpfile.close
+      Note.close_connection
     end
   end
 
@@ -70,13 +68,13 @@ class TestIntegration < Test::Unit::TestCase
   end
 
   def test_create
-    before_record_count = Note.count
+    before_record_count = Note.all.count
     @user1.post '/', {
       title: 'たいとる1', content: 'ないよう1'
     }
     assert @user1.last_response.redirect?
     assert_equal 'http://example.org/', @user1.last_response.header['Location']
-    assert_equal before_record_count + 1, Note.count
+    assert_equal before_record_count + 1, Note.all.count
 
     note = Note.all.last
     assert_equal 'たいとる1', note.title
@@ -98,13 +96,13 @@ class TestIntegration < Test::Unit::TestCase
   def test_update
     note = Note.create(title: 'たいとる', content: 'ないよう', session_id: @user1_session_id)
 
-    before_record_count = Note.count
+    before_record_count = Note.all.count
     @user1.patch "/#{note.id}", {
       title: 'たいとる2', content: 'ないよう2'
     }
     assert @user1.last_response.redirect?
     assert_equal 'http://example.org/', @user1.last_response.header['Location']
-    assert_equal before_record_count, Note.count
+    assert_equal before_record_count, Note.all.count
 
     note = Note.all.last
     assert_equal 'たいとる2', note.title
@@ -114,11 +112,11 @@ class TestIntegration < Test::Unit::TestCase
   def test_destroy
     note = Note.create(title: 'たいとる', content: 'ないよう', session_id: @user1_session_id)
 
-    before_record_count = Note.count
+    before_record_count = Note.all.count
     @user1.delete "/#{note.id}"
     assert @user1.last_response.redirect?
     assert_equal 'http://example.org/', @user1.last_response.header['Location']
-    assert_equal before_record_count - 1, Note.count
+    assert_equal before_record_count - 1, Note.all.count
   end
 end
 
