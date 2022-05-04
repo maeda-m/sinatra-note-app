@@ -10,6 +10,7 @@ module Note
     end
 
     def create
+      sql = 'INSERT INTO notes (title, content, session_id, updated_at) VALUES ($1, $2, $3, $4);'
       values = [
         title,
         content,
@@ -17,12 +18,11 @@ module Note
         Time.now
       ]
 
-      Note.with_connection do |conn|
-        conn.exec_params('INSERT INTO notes (title, content, session_id, updated_at) VALUES ($1, $2, $3, $4);', values)
-      end
+      Note.with_connection { |conn| conn.exec_params(sql, values) }
     end
 
     def update(attrs)
+      sql = 'UPDATE notes SET title = $1, content = $2, session_id = $3, updated_at = $4 WHERE id = $5;'
       values = [
         attrs[:title],
         attrs[:content],
@@ -31,15 +31,14 @@ module Note
         id
       ]
 
-      Note.with_connection do |conn|
-        conn.exec_params('UPDATE notes SET title = $1, content = $2, session_id = $3, updated_at = $4 WHERE id = $5;', values)
-      end
+      Note.with_connection { |conn| conn.exec_params(sql, values) }
     end
 
     def destroy
-      Note.with_connection do |conn|
-        conn.exec_params('DELETE FROM notes WHERE id = $1;', [id])
-      end
+      sql = 'DELETE FROM notes WHERE id = $1;'
+      values = [id]
+
+      Note.with_connection { |conn| conn.exec_params(sql, values) }
     end
   end
 end
