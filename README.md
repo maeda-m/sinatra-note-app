@@ -10,37 +10,32 @@ Webアプリの構成要素を学ぶためのメモアプリです。
 
 |項目|バージョン|
 |:---|---------:|
+|Docker Engine|20.10.12|
+|Docker Compose|1.29.2|
 |Ruby|3.1.1|
 |Sinatra|2.2.0|
 |Puma|5.6.4|
+|PostgreSQL|14.2|
 
-## インストール
+## 実行方法
 
 1. 本リポジトリを `git clone` してください
 ```
   $ git clone https://github.com/maeda-m/sinatra-note-app.git --branch develop
 ```
-2. 次のコマンドで依存ライブラリをインストールしてください
+2. 次のコマンドでコンテナを起動してください
 ```
   $ cd sinatra-note-app
-  $ bundle install
+  $ docker-compose up
 ```
-
-## 実行方法
-
-1. 次のコマンドでWebサーバーを起動してください
-```
-  $ cd sinatra-note-app
-  $ bundle exec puma
-```
-2. ブラウザで http://localhost:9292/ にアクセスしてください
-3. 終了する場合は `Ctrl + C` でWebサーバーを停止してください
+3. ブラウザで http://localhost:9292/ にアクセスしてください
+4. 終了する場合は `Ctrl + C` でコンテナを終了してください
 
 ## テスト方法
 
 ```
 $ cd sinatra-note-app
-$ rake test
+$ docker-compose -f docker-compose.yml -f docker-compose.test.yml up --abort-on-container-exit
 ```
 
 ## Linter
@@ -48,7 +43,7 @@ $ rake test
 1. Ruby Style Guide
 ```
   $ cd sinatra-note-app
-  $ rubocop
+  $ docker-compose -f docker-compose.yml -f docker-compose.rubocop.yml up --abort-on-container-exit
 ```
 2. HTML
     - https://validator.w3.org/

@@ -2,10 +2,9 @@
 
 source 'https://rubygems.org'
 
+gem 'pg'
 gem 'puma'
 gem 'sinatra'
-
-gem 'active_hash', '~> 2.3'
 
 group :development do
   gem 'rubocop', '~> 1.26', require: false

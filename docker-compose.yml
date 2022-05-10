@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  sinatra:
+    restart: "no"
+    tty: true
+    stdin_open: true
+    volumes:
+      - .:/opt/sinatra-note-app
+      - ruby31:/usr/local/bundle
+      - histfile:/histfile
+    env_file:
+      - development.env
+    environment:
+      - TZ=Asia/Tokyo
+      - HISTFILE=/histfile/.bash_history
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        RUBY_VERSION: "3.1.1"
+    depends_on:
+      - postgres14
+    ports:
+      - "9292:9292"
+    command: "bundle exec puma"
+
+  postgres14:
+    restart: "no"
+    image: postgres:14.2
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
+      - postgres14:/var/lib/postgresql/data
+    env_file:
+      - development.env
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --locale=C
+    command: "postgres -c log_statement=all -c log_connections=on -c log_disconnections=on"
+
+volumes:
+  ruby31:
+  postgres14:
+  histfile:
